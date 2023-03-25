@@ -25,6 +25,7 @@ public class Program {
 		if (!checkOut.after(checkIn)) {//Faz isso pra ver se a data de saída não é maior que a de entrada
 			System.out.println("Error reservation: Check-out date must be after check-in date");
 		}
+		
 		else {
 			Reservation reservation = new Reservation(roomNumber, checkIn, checkOut);
 
