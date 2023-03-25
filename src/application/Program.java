@@ -52,7 +52,6 @@ public class Program {
 				System.out.println("Reservation: " + reservation.toString());
 			}
 		}
-
 		sc.close();
 	}
 }
