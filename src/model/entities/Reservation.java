@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.exceptions.DomainException;
+
 public class Reservation {
 
 	private Integer roomNumber;
@@ -15,7 +17,10 @@ public class Reservation {
 	public Reservation() {
 	}
 
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
+		if (!checkOut.after(checkIn)) { //Já coloca no construtor para não estanciar errado = Programção defensiva
+			throw new DomainException("Check-out date must be after check-in date");
+		}
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -43,19 +48,18 @@ public class Reservation {
 																	// long
 	}
 
-	public String updateDates(Date checkIn, Date checkOut) {
-
+	public void updateDates(Date checkIn, Date checkOut) throws DomainException {
+    //Quem trata isso é o método, por isso tem que colocar o throws acima
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Reservation dates for update must be future dates";
-		} // Usa-se um if após o outro pq o primeiro interrompe o código se a condição for
-			// verdade
+			 throw new DomainException("Reservation dates for update must be future dates");
+		} // Usa-se throw para retornar uma excessão. Ex acima.(Quando o argumento é invalido)
 		if (!checkOut.after(checkIn)) {
-			return "Check-out date must be after check-in date";
+			throw new DomainException("Check-out date must be after check-in date");
 		}
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null; // Faz-se desta forma pois se não ocorrer erro precisa retornar uma String, então retorna vazio
+		 // Faz-se desta forma pois se não ocorrer erro precisa retornar uma String, então retorna vazio
 	}
 
 	@Override
